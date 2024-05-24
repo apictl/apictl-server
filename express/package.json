@@ -7,6 +7,7 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "@prisma/client": "^5.14.0",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "dotenv": "^16.4.5",
@@ -14,7 +15,8 @@
     "express-http-proxy": "^2.0.0",
     "http-errors": "~1.6.3",
     "jade": "^0.29.0",
-    "morgan": "~1.9.1"
+    "morgan": "~1.9.1",
+    "prisma": "^5.14.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.0"
