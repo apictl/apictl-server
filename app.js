@@ -4,6 +4,7 @@ var proxy = require("express-http-proxy");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
+const { Stream } = require("stream");
 
 var indexRouter = require("./routes/index");
 
@@ -15,6 +16,28 @@ require("dotenv").config();
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "jade");
 
+app.use(
+  "/proxy",
+  proxy(process.env.PROXY_URL, {
+    parseReqBody: true,
+    proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
+      const token = "";
+      proxyReqOpts.headers = {
+        ...proxyReqOpts.headers,
+        authorization: `Bearer ${token}`,
+      };
+
+      // Stream the request body
+      const bodyStream = new Stream.PassThrough();
+      srcReq.pipe(bodyStream);
+      proxyReqOpts.body = bodyStream;
+
+      console.log(proxyReqOpts);
+      return proxyReqOpts;
+    },
+  })
+);
+
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -22,20 +45,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
-app.use(
-  "/proxy",
-  proxy(process.env.PROXY_URL, {
-    proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
-      const token = "";
-      console.log(proxyReqOpts);
-      proxyReqOpts.headers = {
-        ...proxyReqOpts,
-        authorization: `Bearer ${token}`,
-      };
-      return proxyReqOpts
-    },
-  })
-);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
