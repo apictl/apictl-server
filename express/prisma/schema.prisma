@@ -35,13 +35,14 @@ model Project {
 }
 
 model Endpoint {
-  id              String   @unique @default(cuid())
-  title           String
-  url             String   @unique
-  apiKey          String
-  type            String
-  key             String
-  Project         Project? @relation(fields: [projectId], references: [id])
-  projectId       String?
-  injectionTypeId String   @unique
+  id                   String   @unique @default(cuid())
+  title                String
+  url                  String   @unique
+  apiKey               String
+  type                 String
+  key                  String
+  blackListedCountries String[]
+  Project              Project? @relation(fields: [projectId], references: [id])
+  projectId            String?
+  injectionTypeId      String   @unique
 }
