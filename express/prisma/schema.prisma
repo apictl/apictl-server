@@ -44,5 +44,4 @@ model Endpoint {
   blackListedCountries String[]
   Project              Project? @relation(fields: [projectId], references: [id])
   projectId            String?
-  injectionTypeId      String   @unique
 }
