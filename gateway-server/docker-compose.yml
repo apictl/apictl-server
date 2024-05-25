@@ -1,0 +1,13 @@
+version: "2.2"
+
+services:
+    api-gateway-server:
+        container_name: api-gateway-server
+        restart: unless-stopped
+        ports:
+            - 3000:3000/tcp
+        volumes:
+            - ./.env:/usr/src/app/.env
+        environment:
+            NODE_ENV: production
+        image: spirax/api-gateway-server:latest

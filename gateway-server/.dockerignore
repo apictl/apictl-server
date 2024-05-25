@@ -6,6 +6,7 @@
 **/.settings
 **/.toolstarget
 **/.vs
+**/.env
 **/.vscode
 **/*.*proj.user
 **/*.dbmdl

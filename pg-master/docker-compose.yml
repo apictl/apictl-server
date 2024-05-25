@@ -1,23 +1,24 @@
-version: "3"
+version: "2.2"
+
 services:
-  postgresql-master:
-    image: bitnami/postgresql
-    restart: unless-stopped
-    ports:
-      - '2345:5432'
-    volumes:
-      - pg-master-data:/var/lib/postgresql/data
-    environment:
-      - POSTGRESQL_PGAUDIT_LOG=READ,WRITE
-      - POSTGRESQL_LOG_HOSTNAME=true
-      - POSTGRESQL_REPLICATION_MODE=master
-      - POSTGRESQL_REPLICATION_USER=repl_user
-      - POSTGRESQL_REPLICATION_PASSWORD=repl_user
-      - POSTGRESQL_USERNAME=postgres
-      - POSTGRESQL_PASSWORD=postgres
-      - POSTGRESQL_DATABASE=development_database
-      - ALLOW_EMPTY_PASSWORD=yes
+    postgresql-master:
+        image: bitnami/postgresql
+        restart: unless-stopped
+        ports:
+            - '2345:5432'
+        volumes:
+            - pg-master-data:/var/lib/postgresql/data
+        environment:
+            - POSTGRESQL_PGAUDIT_LOG=READ,WRITE
+            - POSTGRESQL_LOG_HOSTNAME=true
+            - POSTGRESQL_REPLICATION_MODE=master
+            - POSTGRESQL_REPLICATION_USER=repl_user
+            - POSTGRESQL_REPLICATION_PASSWORD=repl_user
+            - POSTGRESQL_USERNAME=postgres
+            - POSTGRESQL_PASSWORD=postgres
+            - POSTGRESQL_DATABASE=development_database
+            - ALLOW_EMPTY_PASSWORD=yes
 
 volumes:
-  pg-master-data:
-    name: pg-master-data
+    pg-master-data:
+      name: pg-master-data
