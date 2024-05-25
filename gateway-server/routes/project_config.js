@@ -4,7 +4,7 @@ const {
   newApiEndpoint,
 } = require("../handlers/project_config");
 const { checkAuth } = require("../middlewares/auth");
-const { checkUserPerms } = require("../middlewares/project_perms");
+const { checkUserPerms } = require("../middlewares/user_perms");
 var router = express.Router({ mergeParams: true });
 
 require("dotenv").config();
