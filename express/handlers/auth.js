@@ -102,7 +102,42 @@ const verifyHandler = async (req, res) => {
 
 const loginHandler = async (req, res) => {
   const { email, password } = req.body;
-  
+  if (!email || !password || email.trim() == "" || password.trim() == "") {
+    return res.status(400).json({
+      success: false,
+      message: "Email and password are required",
+      data: null,
+    });
+  }
+  var user = await prisma.user.findUnique({
+    where: {
+      email,
+    },
+  });
+  if (!user) {
+    return res.status(403).json({
+      success: false,
+      message: "This email does not exist",
+      data: null,
+    });
+  }
+  if (!bcrypt.compareSync(password, user.password)) {
+    return res.status(403).json({
+      success: false,
+      message: "Invalid password",
+      data: null,
+    });
+  }
+  user.password = undefined;
+  const token = jwt.sign({ email, name: user.name, id: user.id }, jwtSecret);
+  res.json({
+    success: true,
+    message: "Logged in succesfully",
+    data: {
+      token,
+      user,
+    },
+  });
 };
 
 module.exports = {
