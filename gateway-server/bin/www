@@ -6,7 +6,8 @@
 
 var app = require('../app');
 var debug = require('debug')('api-gateway:server');
-var http = require('http');
+var https = require("https");
+var fs = require("fs");
 
 /**
  * Get port from environment and store in Express.
@@ -15,11 +16,15 @@ var http = require('http');
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
-/**
- * Create HTTP server.
- */
+const options = {
+  key: fs.readFileSync(`./ssl/privkey.pem`), 
+  cert: fs.readFileSync(`./ssl/fullchain.pem`)
+};
 
-var server = http.createServer(app);
+/**
+ * Create HTTPS server.
+ */
+var server = https.createServer(options, app);
 
 /**
  * Listen on provided port, on all network interfaces.

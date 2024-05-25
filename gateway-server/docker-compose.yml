@@ -6,7 +6,8 @@ services:
             - 3000:3000/tcp
         volumes:
             - ./.env:/usr/src/app/.env
-            - /etc/letsencrypt/:/etc/letsencrypt/
+            - /path/to/ssl/fullchain.pem:/usr/src/app/ssl/fullchain.pem
+            - /path/to/ssl/privkey.pem:/usr/src/app/ssl/privkey.pem
         environment:
             NODE_ENV: production
         image: spirax/api-gateway-server:latest
