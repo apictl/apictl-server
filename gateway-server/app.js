@@ -1,5 +1,7 @@
 var createError = require("http-errors");
 var express = require("express");
+var https = require("https");
+var fs = require("fs");
 var proxy = require("express-http-proxy");
 var path = require("path");
 var cookieParser = require("cookie-parser");
@@ -10,9 +12,16 @@ const authRouter = require("./routes/auth");
 const projectRouter = require("./routes/project");
 const projectConfigRouter = require("./routes/project_config");
 
+require("dotenv").config();
+
+const options = {
+  key: fs.readFileSync("/etc/letsencrypt/live/${process.env.DOMAIN}/privkey.pem"), 
+  cert: fs.readFileSync("/etc/letsencrypt/live/${process.env.DOMAIN}/fullchain.pem")
+};
+
 var app = express();
 
-require("dotenv").config();
+var server = https.createServer(options, app);
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -70,3 +79,6 @@ app.use(function (err, req, res, next) {
 });
 
 module.exports = app;
+
+server.listen(3000);
+console.log('HTTPS Server running on port 3000');

@@ -6,6 +6,7 @@ services:
             - 3000:3000/tcp
         volumes:
             - ./.env:/usr/src/app/.env
+            - /etc/letsencrypt/:/etc/letsencrypt/
         environment:
             NODE_ENV: production
         image: spirax/api-gateway-server:latest
