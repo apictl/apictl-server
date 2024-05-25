@@ -40,8 +40,7 @@ model Endpoint {
   url                  String   @unique
   apiKey               String
   type                 String
-  key                  String
-  blackListedCountries String[]
+  blackListedCountries String[] @default([])
   Project              Project? @relation(fields: [projectId], references: [id])
   projectId            String?
 }
