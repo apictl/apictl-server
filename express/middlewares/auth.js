@@ -1,14 +1,11 @@
 const { PrismaClient } = require("@prisma/client");
-const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 
 dotenv.config();
-const domain = process.env.DOMAIN;
 const jwtSecret = process.env.JWT_SECRET;
 
 const prisma = new PrismaClient();
-const saltRounds = 10;
 
 const checkAuth = async (req, res, next) => {
   const { authorization } = req.headers;
