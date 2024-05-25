@@ -128,6 +128,13 @@ const loginHandler = async (req, res) => {
       data: null,
     });
   }
+  if (!user.isVerified) {
+    return res.status(403).json({
+      success: false,
+      message: "Please verify your account to continue",
+      data: null,
+    });
+  }
   user.password = undefined;
   const token = jwt.sign({ email, name: user.name, id: user.id }, jwtSecret);
   res.json({

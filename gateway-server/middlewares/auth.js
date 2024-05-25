@@ -46,6 +46,13 @@ const checkAuth = async (req, res, next) => {
       data: null,
     });
   }
+  if (!user.isVerified) {
+    return res.status(403).json({
+      success: false,
+      message: "Please verify your account to continue",
+      data: null,
+    });
+  }
   req.user = user;
   next();
 };
