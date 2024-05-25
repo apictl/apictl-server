@@ -11,3 +11,4 @@ services:
         environment:
             NODE_ENV: production
         image: spirax/api-gateway-server:latest
+        command: sh -c "npx prisma migrate deploy && npm run start"
