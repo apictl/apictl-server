@@ -28,10 +28,18 @@ const checkAuth = async (req, res, next) => {
   try {
     jwtUser = jwt.verify(token, jwtSecret);
   } catch (e) {
-    return res.status(500).send("There was an error in verifying your account");
+    return res.status(500).send({
+      success: false,
+      message: "There was an error in verifying your account",
+      data: null,
+    });
   }
   if (!jwtUser) {
-    res.status(500).send("There was an error in verifying your account");
+    res.status(500).send({
+      success: false,
+      message: "There was an error in verifying your account",
+      data: null,
+    });
   }
   const user = await prisma.user.findUnique({
     where: {
