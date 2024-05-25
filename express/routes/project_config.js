@@ -6,6 +6,7 @@ var router = express.Router({ mergeParams: true });
 
 require("dotenv").config();
 
-router.get("/", checkAuth, checkUserPerms, getProjectInfo);
+router.use(checkAuth, checkUserPerms);
+router.get("/", getProjectInfo);
 
 module.exports = router;
