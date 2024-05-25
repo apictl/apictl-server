@@ -6,6 +6,7 @@
 
 var app = require('../app');
 var debug = require('debug')('api-gateway:server');
+var http = require('http');
 var https = require("https");
 var fs = require("fs");
 
@@ -16,15 +17,19 @@ var fs = require("fs");
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
-const options = {
-  key: fs.readFileSync(`./ssl/privkey.pem`), 
-  cert: fs.readFileSync(`./ssl/fullchain.pem`)
-};
+// Check if SSL certificates are present
+if (fs.existsSync(`./ssl/privkey.pem`) || fs.existsSync(`./ssl/fullchain.pem`)) {
+  const options = {
+    key: fs.readFileSync(`./ssl/privkey.pem`), 
+    cert: fs.readFileSync(`./ssl/fullchain.pem`)
+  };
 
-/**
- * Create HTTPS server.
- */
-var server = https.createServer(options, app);
+  console.log("SSL certificates found. Running in HTTPS mode.");
+  var server = https.createServer(options, app);
+} else {
+  console.log("No SSL certificates found. Running in HTTP mode.");
+  var server = http.createServer(app);
+}
 
 /**
  * Listen on provided port, on all network interfaces.
