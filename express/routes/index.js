@@ -1,12 +1,12 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
 
-require('dotenv').config();
+require("dotenv").config();
 
-router.get('/', function(req, res, next) {
-  res.render('index', { 
-    title: 'API Gateway',
-    text: process.env.DISPLAY_TEXT
+router.get("/", function (req, res, next) {
+  res.render("index", {
+    title: "API Gateway",
+    text: process.env.DISPLAY_TEXT,
   });
 });
 
