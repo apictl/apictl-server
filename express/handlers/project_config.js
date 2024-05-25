@@ -38,6 +38,7 @@ const newApiEndpoint = async (req, res) => {
     return res.status(400).json({
       success: false,
       message: "URL already exists for this project",
+      data: null
     });
   }
   try {
