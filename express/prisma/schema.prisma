@@ -37,10 +37,12 @@ model Project {
 model Endpoint {
   id                   String   @unique @default(cuid())
   title                String
-  url                  String   @unique
+  url                  String
   apiKey               String
   type                 String
   blackListedCountries String[] @default([])
   Project              Project? @relation(fields: [projectId], references: [id])
   projectId            String?
+
+  @@unique([url, projectId])
 }

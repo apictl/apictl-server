@@ -19,6 +19,9 @@ const checkUserPerms = async (req, res, next) => {
       id,
       userId: user.id,
     },
+    include: {
+      endpoint: true,
+    },
   });
   if (!project) {
     return res.status(404).json({

@@ -18,7 +18,7 @@ const checkAuth = async (req, res, next) => {
   }
   const token = authorization.replace("Bearer ", "");
   if (!token) {
-    return res.status(403).json({
+    return res.status(401).json({
       success: false,
       message: "Authorization bearer token is missing",
       data: null,
