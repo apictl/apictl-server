@@ -3,7 +3,7 @@ services:
         image: bitnami/postgresql
         restart: unless-stopped
         ports:
-            - '2345:5432'
+            - '2345:5432/tcp'
         volumes:
             - pg-master-data:/var/lib/postgresql/data
         environment:

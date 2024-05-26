@@ -1,7 +1,7 @@
 var express = require("express");
+var router = express.Router();
 const { newProjectHandler } = require("../handlers/project");
 const { checkAuth } = require("../middlewares/auth");
-var router = express.Router();
 
 require("dotenv").config();
 
