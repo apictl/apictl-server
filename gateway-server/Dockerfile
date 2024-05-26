@@ -1,7 +1,7 @@
 FROM node:lts-alpine AS builder
 WORKDIR /usr/src/app
 COPY package*.json ./
-RUN npm ci --silent # Install all dependencies
+RUN npm ci
 COPY . .
 RUN npx prisma generate
 
