@@ -1,5 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 const dotenv = require("dotenv");
+const { validateUrl } = require("../utils/validators");
 
 dotenv.config();
 
@@ -18,11 +19,19 @@ const getProjectInfo = async (req, res) => {
 
 const newApiEndpoint = async (req, res) => {
   const project = req.project;
-  const { title, apiUrl, apiKey, type } = req.body;
+  const { title, apiUrl, apiKey, type, allowedOrigins, allowedShaKeys } =
+    req.body;
   if (!title || !apiUrl || !apiKey || !type) {
     return res.status(400).json({
       success: false,
       message: "Title, API URL, API Key, and Key type are required",
+      data: null,
+    });
+  }
+  if (!validateUrl(apiUrl)) {
+    return res.status(400).json({
+      success: false,
+      message: "API URL needs to be a valid URL",
       data: null,
     });
   }
@@ -38,7 +47,7 @@ const newApiEndpoint = async (req, res) => {
     return res.status(400).json({
       success: false,
       message: "URL already exists for this project",
-      data: null
+      data: null,
     });
   }
   try {
@@ -47,6 +56,8 @@ const newApiEndpoint = async (req, res) => {
         title,
         apiKey,
         type,
+        allowedOrigins,
+        allowedShaKeys,
         url: apiUrl,
         projectId: project.id,
       },

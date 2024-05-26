@@ -8,8 +8,15 @@ const proxyRouter = require("./routes/proxy");
 const authRouter = require("./routes/auth");
 const projectRouter = require("./routes/project");
 const projectConfigRouter = require("./routes/project_config");
+const cors = require("cors");
 
 var app = express();
+app.use(
+  cors({
+    origin: true,
+    credentials: true
+  })
+)
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
