@@ -1,6 +1,6 @@
 var createError = require("http-errors");
 var express = require("express");
-var proxy = require("express-http-proxy");
+const { createProxyMiddleware } = require("http-proxy-middleware");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
@@ -14,31 +14,28 @@ var app = express();
 
 require("dotenv").config();
 
-// view engine setup
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "jade");
-
 app.use(
   "/proxy",
-  proxy(process.env.PROXY_URL, {
-    parseReqBody: true,
-    proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
-      const token = "";
-      proxyReqOpts.headers = {
-        ...proxyReqOpts.headers,
-        authorization: `Bearer ${token}`,
-      };
-
-      // Stream the request body
-      const bodyStream = new Stream.PassThrough();
-      srcReq.pipe(bodyStream);
-      proxyReqOpts.body = bodyStream;
-
-      console.log(proxyReqOpts);
-      return proxyReqOpts;
+  createProxyMiddleware({
+    target: process.env.PROXY_URL,
+    changeOrigin: true,
+    on: {
+      proxyReq: (proxyReq, req, res) => {
+        proxyReq.setHeader(
+          "Authorization",
+          `Bearer ${process.env.TEST_API_KEY}`
+        );
+      },
+      proxyRes: (proxyRes, req, res) => {
+        res.statusCode = proxyRes.statusCode;
+      },
     },
   })
 );
+
+// view engine setup
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "jade");
 
 app.use(logger("dev"));
 app.use(express.json());
