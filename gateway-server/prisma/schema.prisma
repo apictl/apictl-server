@@ -43,6 +43,8 @@ model Endpoint {
   blackListedCountries String[] @default([])
   Project              Project? @relation(fields: [projectId], references: [id])
   projectId            String?
+  allowedOrigins       String[] @default([])
+  allowedShaKeys       String[] @default([])
 
   @@unique([url, projectId])
 }
