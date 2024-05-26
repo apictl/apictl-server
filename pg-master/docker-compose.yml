@@ -5,7 +5,7 @@ services:
         ports:
             - '2345:5432/tcp'
         volumes:
-            - /PATH/TO/POSTGRESQL_DATA:/bitnami/postgresql
+            - pg-master-data:/bitnami/postgresql
         environment:
             - POSTGRESQL_PGAUDIT_LOG=READ,WRITE
             - POSTGRESQL_LOG_HOSTNAME=true
@@ -15,4 +15,7 @@ services:
             - POSTGRESQL_USERNAME=postgres
             - POSTGRESQL_PASSWORD=<YOUR_PASSWORD>
             - POSTGRESQL_DATABASE=development_database
-            - ALLOW_EMPTY_PASSWORD=yes
+
+volumes:
+    pg-master-data:
+      name: pg-master-data
