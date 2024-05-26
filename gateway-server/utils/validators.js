@@ -21,4 +21,5 @@ const validateUrl = (url) => {
 module.exports = {
   validateEmail,
   validatePassword,
+  validateUrl,
 };
