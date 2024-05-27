@@ -6,7 +6,7 @@ const getCountry = async (ip) => {
     const response = reader.country(ip);
     return response.country.isoCode;
   } catch (error) {
-    return error.message;
+    return "Unknown";
   }
 };
 
