@@ -1,8 +1,10 @@
 var express = require("express");
 var router = express.Router();
+const { PrismaClient } = require('@prisma/client')
 const { createProxyMiddleware } = require("http-proxy-middleware");
 
 require("dotenv").config();
+const prisma = new PrismaClient()
 
 router.use(
   "/",

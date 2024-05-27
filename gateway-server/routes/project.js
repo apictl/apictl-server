@@ -5,6 +5,6 @@ const { checkAuth } = require("../middlewares/auth");
 
 require("dotenv").config();
 
-router.post("/new_project", checkAuth, newProjectHandler);
+router.post("/create", checkAuth, newProjectHandler);
 
 module.exports = router;

@@ -11,6 +11,6 @@ require("dotenv").config();
 
 router.use(checkAuth, checkUserPerms);
 router.get("/", getProjectInfo);
-router.patch("/new_endpoint", newApiEndpoint);
+router.patch("/endpoint/create", newApiEndpoint);
 
 module.exports = router;

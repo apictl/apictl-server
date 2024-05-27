@@ -57,7 +57,7 @@ const registerHandler = async (req, res) => {
   });
   user.password = undefined;
   const token = jwt.sign({ name, email, id: user.id }, jwtSecret);
-  const url = `${domain}/auth/verify?token=${token}`;
+  const url = `${domain}auth/verify?token=${token}`;
   await sendEmail(
     email,
     "Verify",

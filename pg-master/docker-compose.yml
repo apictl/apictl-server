@@ -14,7 +14,7 @@ services:
             - POSTGRESQL_REPLICATION_PASSWORD=repl_user
             - POSTGRESQL_USERNAME=postgres
             - POSTGRESQL_PASSWORD=<YOUR_PASSWORD>
-            - POSTGRESQL_DATABASE=development_database
+            - POSTGRESQL_DATABASE=api_gateway
 
 volumes:
     pg-master-data:
