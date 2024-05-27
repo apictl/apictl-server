@@ -77,6 +77,8 @@ const proxyHandler = async (req, res) => {
         },
       })
 
+      console.log(country, url)
+
     proxy(req, res);
 }
 
