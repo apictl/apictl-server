@@ -26,6 +26,10 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./gateway-server
-          file: ./gateway-server/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/api-gateway-server:latest
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/api-gateway-server:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/api-gateway-server:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+            
