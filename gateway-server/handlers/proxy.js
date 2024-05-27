@@ -7,7 +7,7 @@ require("dotenv").config();
 
 const proxyHandler = async (req, res) => {
     const { project, endpoint } = req.params;
-    const country = await getCountry(req.headers['x-forwarded-for'] || req.connection.remoteAddress);
+    const country = await getCountry(req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress);
     const projectRecord = await prisma.project.findUnique({
         where: {
             id: project,
@@ -77,7 +77,7 @@ const proxyHandler = async (req, res) => {
         },
       })
 
-      console.log(country, url)
+      console.log(country, req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress)
 
     proxy(req, res);
 }
