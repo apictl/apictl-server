@@ -1,26 +1,10 @@
 var express = require("express");
-var router = express.Router();
-const { createProxyMiddleware } = require("http-proxy-middleware");
+var router = express.Router({ mergeParams: true });
 
-require("dotenv").config();
+const {
+  proxyHandler,
+} = require("../handlers/proxy");
 
-router.use(
-  "/",
-  createProxyMiddleware({
-    target: process.env.PROXY_URL,
-    changeOrigin: true,
-    on: {
-      proxyReq: (proxyReq, req, res) => {
-        proxyReq.setHeader(
-          "Authorization",
-          `Bearer ${process.env.TEST_API_KEY}`
-        );
-      },
-      proxyRes: (proxyRes, req, res) => {
-        res.statusCode = proxyRes.statusCode;
-      },
-    },
-  })
-);
+router.get("/", proxyHandler);
 
 module.exports = router;

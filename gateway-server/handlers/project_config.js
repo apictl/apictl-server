@@ -19,7 +19,7 @@ const getProjectInfo = async (req, res) => {
 
 const newApiEndpoint = async (req, res) => {
   const project = req.project;
-  const { title, apiUrl, apiKey, type, allowedOrigins, allowedShaKeys } =
+  const { title, apiUrl, apiKey, type, blackListedCountries, allowedOrigins, allowedShaKeys } =
     req.body;
   if (!title || !apiUrl || !apiKey || !type) {
     return res.status(400).json({
@@ -58,6 +58,7 @@ const newApiEndpoint = async (req, res) => {
         type,
         allowedOrigins,
         allowedShaKeys,
+        blackListedCountries,
         url: apiUrl,
         projectId: project.id,
       },
