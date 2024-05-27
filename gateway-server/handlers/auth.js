@@ -6,7 +6,6 @@ const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 
 dotenv.config();
-const domain = process.env.DOMAIN;
 const jwtSecret = process.env.JWT_SECRET;
 
 const prisma = new PrismaClient();
@@ -58,11 +57,7 @@ const registerHandler = async (req, res) => {
   user.password = undefined;
   const token = jwt.sign({ name, email, id: user.id }, jwtSecret);
   
-  if (domain.endsWith("/")) {
-    domain = domain.slice(0, -1);
-  }
-  
-  const url = `${domain}/auth/verify?token=${token}`;
+  const url = `${req.protocol}://${req.get('host')}/auth/verify?token=${token}`;
   await sendEmail(
     email,
     "Verify",
