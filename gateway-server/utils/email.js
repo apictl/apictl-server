@@ -3,7 +3,7 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 const fromEmail = process.env.EMAIL_ID;
-const resendApiKey = process.env.RESEND_API_KEY;
+const resendApiKey = process.env.EMAIL_API_KEY;
 
 const resend = new Resend(resendApiKey);
 

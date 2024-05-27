@@ -18,4 +18,4 @@ services:
 
 volumes:
     pg-master-data:
-      name: pg-master-data
+        name: pg-master-data

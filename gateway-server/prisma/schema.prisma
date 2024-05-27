@@ -35,16 +35,24 @@ model Project {
 }
 
 model Endpoint {
-  id                   String   @unique @default(cuid())
+  id                   String      @unique @default(cuid())
   title                String
   url                  String
-  apiKey               String
-  type                 String
-  blackListedCountries String[] @default([])
-  Project              Project? @relation(fields: [projectId], references: [id])
+  blackListedCountries String[]    @default([])
+  Project              Project?    @relation(fields: [projectId], references: [id])
+  injections           Injection[]
   projectId            String?
-  allowedOrigins       String[] @default([])
-  allowedShaKeys       String[] @default([])
+  allowedOrigins       String[]    @default([])
+  allowedShaKeys       String[]    @default([])
 
   @@unique([url, projectId])
+}
+
+model Injection {
+  id         String    @unique @default(cuid())
+  key        String
+  value      String
+  type       String
+  Endpoint   Endpoint? @relation(fields: [endpointId], references: [id])
+  endpointId String?
 }

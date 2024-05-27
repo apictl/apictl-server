@@ -1,6 +1,7 @@
 const { PrismaClient } = require("@prisma/client");
 const dotenv = require("dotenv");
 const { validateUrl } = require("../utils/validators");
+const { encrypt } = require("../utils/encryption");
 
 dotenv.config();
 
@@ -19,12 +20,18 @@ const getProjectInfo = async (req, res) => {
 
 const newApiEndpoint = async (req, res) => {
   const project = req.project;
-  const { title, apiUrl, apiKey, type, blackListedCountries, allowedOrigins, allowedShaKeys } =
-    req.body;
-  if (!title || !apiUrl || !apiKey || !type) {
+  const {
+    title,
+    apiUrl,
+    injections,
+    blackListedCountries,
+    allowedOrigins,
+    allowedShaKeys,
+  } = req.body;
+  if (!title || !apiUrl || !injections || injections == []) {
     return res.status(400).json({
       success: false,
-      message: "Title, API URL, API Key, and Key type are required",
+      message: "Title, API URL, Injections are required",
       data: null,
     });
   }
@@ -32,6 +39,19 @@ const newApiEndpoint = async (req, res) => {
     return res.status(400).json({
       success: false,
       message: "API URL needs to be a valid URL",
+      data: null,
+    });
+  }
+  var invalidInjection = false;
+  injections.forEach((injection) => {
+    if (!injection.key || !injection.value || !injection.type) {
+      invalidInjection = true;
+    }
+  });
+  if (invalidInjection) {
+    return res.status(400).json({
+      success: false,
+      message: "Each inject needs a key, value, and type",
       data: null,
     });
   }
@@ -50,12 +70,21 @@ const newApiEndpoint = async (req, res) => {
       data: null,
     });
   }
+  const injectionData = [];
+  injections.forEach((injection) => {
+    injectionData.push({
+      key: injection.key,
+      value: encrypt(injection.value, process.env.KEY_ENCRYPTION_SECRET),
+      type: injection.type,
+    });
+  });
   try {
     await prisma.endpoint.create({
       data: {
         title,
-        apiKey,
-        type,
+        injections: {
+          createMany: { data: injectionData },
+        },
         allowedOrigins,
         allowedShaKeys,
         blackListedCountries,
