@@ -5,6 +5,6 @@ const {
   proxyHandler,
 } = require("../handlers/proxy");
 
-router.get("/", proxyHandler);
+router.use("/", proxyHandler);
 
 module.exports = router;
