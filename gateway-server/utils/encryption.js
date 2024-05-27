@@ -1,12 +1,9 @@
-const crypto = require("crypto");
+var { ncrypt } = require("ncrypt-js");
+const dotenv = require("dotenv");
 
-function encrypt(text) {
-  return text;
-}
+dotenv.config();
 
-function decrypt(text) {
-  return text;
-}
+var { encrypt, decrypt } = new ncrypt(process.env.KEY_ENCRYPTION_SECRET);
 
 module.exports = {
   encrypt,
