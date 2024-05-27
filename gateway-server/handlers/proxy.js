@@ -59,10 +59,8 @@ const proxyHandler = async (req, res) => {
         endpointRecord.url = endpointRecord.url.slice(0, -1);
     }
 
-    const url = endpointRecord.url + req.originalUrl.replace(`/${project}/${endpoint}`, "");
-
     const proxy = createProxyMiddleware({
-        target: url,
+        target: endpointRecord.url + req.originalUrl.replace(`/${project}/${endpoint}`, ""),
         changeOrigin: true,
         on: {
           proxyReq: (proxyReq, req, res) => {

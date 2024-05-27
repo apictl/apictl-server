@@ -96,7 +96,7 @@ const verifyHandler = async (req, res) => {
     res.status(500).send("There was an error in verifying your account");
   }
   res.send(
-    `Your account has been verified succesfully. Click <a href="${domain}">here</a> to go to API Gateway`
+    `Your account has been verified succesfully. Click <a href="${req.protocol}://${req.get('host')}/">here</a> to go to API Gateway`
   );
 };
 
