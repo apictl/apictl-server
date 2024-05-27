@@ -32,7 +32,7 @@ const proxyHandler = async (req, res) => {
     if (blackListedCountries.includes(country)) {
         return res.status(403).json({
             success: false,
-            message: `Forbidden ${country}`,
+            message: `Forbidden Country: ${country}`,
             data: null,
         });
     }
@@ -76,8 +76,6 @@ const proxyHandler = async (req, res) => {
           },
         },
       })
-
-      console.log(country, req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress)
 
     proxy(req, res);
 }
