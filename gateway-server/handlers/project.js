@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const sendEmail = require("../utils/email");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
-const { random_string } = require("../utils/random_gen");
+const { generateProjectToken } = require("../utils/token_gen");
 
 dotenv.config();
 const domain = process.env.DOMAIN;
@@ -24,7 +24,7 @@ const newProjectHandler = async (req, res) => {
     });
   }
   var project;
-  const public_token = random_string(10);
+  const public_token = generateProjectToken(req.user.email);
   try {
     project = await prisma.project.create({
       data: {

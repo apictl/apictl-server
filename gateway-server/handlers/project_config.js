@@ -2,7 +2,7 @@ const { PrismaClient } = require("@prisma/client");
 const dotenv = require("dotenv");
 const { validateUrl } = require("../utils/validators");
 const { encrypt } = require("../utils/encryption");
-const { random_string } = require("../utils/random_gen");
+const { generateEndpointToken } = require("../utils/token_gen");
 
 dotenv.config();
 
@@ -79,7 +79,7 @@ const newApiEndpoint = async (req, res) => {
       type: injection.type,
     });
   });
-  const public_token = random_string(10);
+  const public_token = generateEndpointToken(req.user.email);
   try {
     await prisma.endpoint.create({
       data: {
