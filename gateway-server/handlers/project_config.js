@@ -1,6 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 const dotenv = require("dotenv");
-const { validateUrl } = require("../utils/validators");
+const { validateUrl, validateLocalhost } = require("../utils/validators");
 const { encrypt } = require("../utils/encryption");
 const { generateEndpointToken } = require("../utils/token_gen");
 
@@ -36,10 +36,10 @@ const newApiEndpoint = async (req, res) => {
       data: null,
     });
   }
-  if (!validateUrl(apiUrl)) {
+  if (!validateUrl(apiUrl) || validateLocalhost(apiUrl)) {
     return res.status(400).json({
       success: false,
-      message: "API URL needs to be a valid URL",
+      message: "API URL needs to be a valid URL, and it cannot be localhost.",
       data: null,
     });
   }
