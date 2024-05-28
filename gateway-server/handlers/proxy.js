@@ -16,13 +16,13 @@ const proxyHandler = async (req, res) => {
   );
   const projectRecord = await prisma.project.findUnique({
     where: {
-      id: project,
+      public_token: project,
     },
   });
 
   const endpointRecord = await prisma.endpoint.findUnique({
     where: {
-      id: endpoint,
+      public_token: endpoint,
     },
     include: {
       injections: true,

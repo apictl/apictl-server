@@ -31,7 +31,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", indexRouter);
 app.use("/auth", authRouter);
 app.use("/project", projectRouter);
-app.use("/project/:id", projectConfigRouter);
+app.use("/project/:token", projectConfigRouter);
 app.use("/:project/:endpoint/*", proxyRouter);
 
 // catch 404 and forward to error handler

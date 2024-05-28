@@ -5,18 +5,18 @@ dotenv.config();
 const prisma = new PrismaClient();
 
 const checkUserPerms = async (req, res, next) => {
-  const { id } = req.params;
+  const { token } = req.params;
   const user = req.user;
-  if (!id || id.trim() == "") {
+  if (!token || token.trim() == "") {
     return res.status(400).json({
       success: false,
       message: "Could not get project id",
       data: null,
     });
   }
-  const project = await prisma.project.findUnique({
+  const project = await prisma.project.findFirst({
     where: {
-      id,
+      public_token: token,
       userId: user.id,
     },
     include: {
