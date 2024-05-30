@@ -17,6 +17,7 @@ services:
             - POSTGRESQL_DATABASE=api_gateway
     redis-master:
         image: 'bitnami/redis:latest'
+        restart: unless-stopped
         ports:
             - '9736:6379/tcp'
         environment:
