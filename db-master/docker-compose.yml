@@ -1,6 +1,6 @@
 services:
     postgresql-master:
-        image: bitnami/postgresql
+        image: bitnami/postgresql:latest
         restart: unless-stopped
         ports:
             - '2345:5432/tcp'
@@ -16,7 +16,7 @@ services:
             - POSTGRESQL_PASSWORD=<YOUR_PASSWORD>
             - POSTGRESQL_DATABASE=api_gateway
     redis-master:
-        image: 'bitnami/redis:latest'
+        image: bitnami/redis:latest
         restart: unless-stopped
         ports:
             - '9736:6379/tcp'
