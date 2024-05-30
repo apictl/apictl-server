@@ -47,6 +47,7 @@ const proxyVerification = async (req, res, next) => {
   }
 
   const allowedOrigins = endpointRecord.allowedOrigins || [];
+  console.log(allowedOrigins, req.headers.host)
   if (
     allowedOrigins.length > 0 &&
     !allowedOrigins.includes(req.headers.origin)
