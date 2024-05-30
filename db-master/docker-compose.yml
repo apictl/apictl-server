@@ -15,6 +15,12 @@ services:
             - POSTGRESQL_USERNAME=postgres
             - POSTGRESQL_PASSWORD=<YOUR_PASSWORD>
             - POSTGRESQL_DATABASE=api_gateway
+    redis-master:
+        image: 'bitnami/redis:latest'
+        ports:
+            - '9736:6379/tcp'
+        environment:
+            - ALLOW_EMPTY_PASSWORD=yes
 
 volumes:
     pg-master-data:
