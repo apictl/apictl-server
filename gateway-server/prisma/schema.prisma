@@ -48,17 +48,18 @@ model Endpoint {
   public_token         String      @unique
   createdAt            DateTime    @default(now())
   updatedAt            DateTime    @updatedAt
+  limit                Int         @default(60)
 
   @@unique([url, projectId])
 }
 
 model Injection {
-  id           String    @unique @default(cuid())
-  key          String
-  value        String
-  type         String
-  Endpoint     Endpoint? @relation(fields: [endpointId], references: [id])
-  endpointId   String?
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  id         String    @unique @default(cuid())
+  key        String
+  value      String
+  type       String
+  Endpoint   Endpoint? @relation(fields: [endpointId], references: [id])
+  endpointId String?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
 }

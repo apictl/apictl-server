@@ -28,11 +28,19 @@ const newApiEndpoint = async (req, res) => {
     blackListedCountries,
     allowedOrigins,
     allowedShaKeys,
+    limit,
   } = req.body;
   if (!title || !apiUrl || !injections || injections == []) {
     return res.status(400).json({
       success: false,
       message: "Title, API URL, Injections are required",
+      data: null,
+    });
+  }
+  if (limit > 1000 || limit < 0) {
+    return res.status(400).json({
+      success: false,
+      message: "Limit must be between 0 and 1000",
       data: null,
     });
   }
@@ -88,6 +96,7 @@ const newApiEndpoint = async (req, res) => {
         allowedShaKeys,
         blackListedCountries,
         public_token,
+        limit,
         url: apiUrl,
         projectId: project.id,
         injections: {
