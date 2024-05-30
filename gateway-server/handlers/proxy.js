@@ -18,7 +18,6 @@ const proxyHandler = async (req, res) => {
     changeOrigin: true,
     on: {
       proxyReq: (proxyReq, req, res) => {
-        console.log(endpointRecord);
         endpointRecord.injections.forEach((injection) => {
           if (injection.type.toLowerCase() == "header") {
             proxyReq.setHeader(
