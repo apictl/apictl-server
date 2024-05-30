@@ -20,7 +20,7 @@ services:
         ports:
             - '9736:6379/tcp'
         environment:
-            - ALLOW_EMPTY_PASSWORD=yes
+            - REDIS_PASSWORD=<YOUR_PASSWORD>
 
 volumes:
     pg-master-data:
