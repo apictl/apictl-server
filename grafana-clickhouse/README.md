@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS proxy_analytics (
   origin String NOT NULL,
   project String NOT NULL,
   endpoint String NOT NULL,
-  time DateTime NOT NULL,
+  time DateTime64 NOT NULL,
   path String NOT NULL,
   user_agent String NOT NULL,
   status_code UInt16 NOT NULL,
