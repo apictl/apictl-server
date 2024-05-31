@@ -5,6 +5,10 @@ services:
         container_name: clickhouse
         restart: unless-stopped
         hostname: clickhouse
+        environment:
+            - CLICKHOUSE_DB=proxy
+            - CLICKHOUSE_USER=clickhouse
+            - CLICKHOUSE_PASSWORD=<YOUR_PASSWORD>
         volumes:
           - ${PWD}/volumes/clickhouse/config.xml:/etc/clickhouse-server/config.d/config.xml
           - ${PWD}/volumes/clickhouse/users.xml:/etc/clickhouse-server/users.d/users.xml
