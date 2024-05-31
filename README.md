@@ -2,6 +2,16 @@
 
 An API Gateway, which aims to keep your API Keys away from your frontend.
 
+## Stack
+- Node.js
+- Express.js
+- Redis
+- Postgres
+- Clickhouse
+- Grafana
+- Docker
+- Geolite2
+
 ## How to use
 
 1. Clone this repository
