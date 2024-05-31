@@ -39,6 +39,7 @@ const proxyVerification = async (req, res, next) => {
 
   const blackListedCountries = endpointRecord.blackListedCountries || [];
   if (blackListedCountries.includes(country)) {
+    console.log(`Forbidden Country: ${country}`);
     return res.status(403).json({
       success: false,
       message: `Forbidden Country: ${country}`,
@@ -51,6 +52,7 @@ const proxyVerification = async (req, res, next) => {
     allowedOrigins.length > 0 &&
     !allowedOrigins.includes(req.headers.origin)
   ) {
+    console.log(`Forbidden Origin: ${req.headers.origin}`);
     return res.status(403).json({
       success: false,
       message: "Forbidden",
@@ -63,6 +65,7 @@ const proxyVerification = async (req, res, next) => {
     allowedShaKeys.length > 0 &&
     !allowedShaKeys.includes(req.headers["x-sha-key"])
   ) {
+    console.log(`Forbidden SHA Key: ${req.headers["x-sha-key"]}`);
     return res.status(403).json({
       success: false,
       message: "Forbidden",

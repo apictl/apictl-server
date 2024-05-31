@@ -19,8 +19,8 @@ const proxyRateLimiter = async (req, res, next) => {
   if (requests === 1) {
     await client.expire(redisId, 60);
   }
-  console.log(redisId, requests, limit)
   if (requests > limit) {
+    console.log(`Rate limit exceeded for ${ip}`);
     return res.status(429).json({
       success: false,
       message: "Requests over limit",
