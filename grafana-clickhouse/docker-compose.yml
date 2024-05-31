@@ -9,8 +9,8 @@ services:
           - ${PWD}/volumes/clickhouse/config.xml:/etc/clickhouse-server/config.d/config.xml
           - ${PWD}/volumes/clickhouse/users.xml:/etc/clickhouse-server/users.d/users.xml
         ports:
-          - '8123:8123/tcp'
-          - '9000:9000/tcp'
+          - '3218:8123/tcp'
+          - '1238:9000/tcp'
     grafana:
         image: grafana/grafana-enterprise:latest
         container_name: grafana
@@ -20,7 +20,7 @@ services:
             - GF_INSTALL_PLUGINS=grafana-clickhouse-datasource
             - GF_SECURITY_ALLOW_EMBEDDING=true
         ports:
-            - '3000:3000/tcp'
+            - '5687:3000/tcp'
         volumes:
             - ${PWD}/volumes/grafana/:/etc/grafana/provisioning/datasources
         depends_on:
