@@ -23,9 +23,13 @@ services:
             - GF_SECURITY_ADMIN_PASSWORD=<YOUR_PASSWORD>
             - GF_INSTALL_PLUGINS=grafana-clickhouse-datasource
             - GF_SECURITY_ALLOW_EMBEDDING=true
+            - GF_SERVER_CERT_KEY=/etc/certs/privkey.pem
+            - GF_SERVER_CERT_FILE=/etc/certs/fullchain.pem
         ports:
             - '5687:3000/tcp'
         volumes:
             - ${PWD}/volumes/grafana/:/etc/grafana/provisioning/datasources
+            - /path/to/ssl/fullchain.pem:/etc/certs/fullchain.pem
+            - /path/to/ssl/privkey.pem:/etc/certs/privkey.pem
         depends_on:
             - clickhouse
