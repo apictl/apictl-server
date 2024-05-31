@@ -24,6 +24,7 @@ const proxyHandler = async (req, res) => {
               injection.key,
               decrypt(injection.value, process.env.KEY_ENCRYPTION_SECRET)
             );
+            console.log(proxyReq.getHeaders());
           }
         });
       },
