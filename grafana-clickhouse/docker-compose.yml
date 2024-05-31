@@ -6,11 +6,15 @@ services:
         restart: unless-stopped
         hostname: clickhouse
         volumes:
-          - ${PWD}/volumes/clickhouse/config.xml:/etc/clickhouse-server/config.d/config.xml
-          - ${PWD}/volumes/clickhouse/users.xml:/etc/clickhouse-server/users.d/users.xml
+            - ${PWD}/volumes/clickhouse/config.xml:/etc/clickhouse-server/config.d/config.xml
+            - ${PWD}/volumes/clickhouse/users.xml:/etc/clickhouse-server/users.d/users.xml
         ports:
-          - '3218:8123/tcp'
-          - '1238:9000/tcp'
+            - '3218:8123/tcp'
+            - '1238:9000/tcp'
+        environment:
+            - CLICKHOUSE_DB=proxy
+            - CLICKHOUSE_USER=clickhouse
+            - CLICKHOUSE_PASSWORD=<YOUR_PASSWORD>
     grafana:
         image: grafana/grafana-enterprise:latest
         container_name: grafana
