@@ -28,13 +28,13 @@ const proxyHandler = async (req, res) => {
         });
       },
       proxyRes: (proxyRes, req, res) => {
+        console.log(proxyRes.statusCode);
         res.statusCode = proxyRes.statusCode;
-        
       },
     },
   });
-  
-  res.setHeader("proxy-status-code", 200);
+
+  res.setHeader("Proxy-Status", 200);
   proxy(req, res);
 };
 
