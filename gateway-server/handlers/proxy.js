@@ -15,7 +15,7 @@ const proxyHandler = async (req, res) => {
     target:
       endpointRecord.url +
       req.originalUrl.replace(`/${project}/${endpoint}`, ""),
-    changeOrigin: true,
+    changeOrigin: false,
     on: {
       proxyReq: (proxyReq, req, res) => {
         endpointRecord.injections.forEach((injection) => {
@@ -28,7 +28,6 @@ const proxyHandler = async (req, res) => {
         });
       },
       proxyRes: (proxyRes, req, res) => {
-        console.log(proxyRes.statusCode);
         res.statusCode = proxyRes.statusCode;
       },
     },
