@@ -1,0 +1,27 @@
+services:
+    clickhouse:
+        image: clickhouse/clickhouse-server:latest
+        user: '101:101'
+        container_name: clickhouse
+        restart: unless-stopped
+        hostname: clickhouse
+        volumes:
+          - ${PWD}/volumes/clickhouse/config.xml:/etc/clickhouse-server/config.d/config.xml
+          - ${PWD}/volumes/clickhouse/users.xml:/etc/clickhouse-server/users.d/users.xml
+        ports:
+          - '8123:8123'
+          - '9000:9000'
+    grafana:
+        image: grafana/grafana-enterprise:latest
+        container_name: grafana
+        restart: unless-stopped
+        environment:
+            - GF_SECURITY_ADMIN_PASSWORD=<YOUR_PASSWORD>
+            - GF_INSTALL_PLUGINS=grafana-clickhouse-datasource
+            - GF_SECURITY_ALLOW_EMBEDDING=true
+        ports:
+            - '3000:3000'
+        volumes:
+            - ${PWD}/volumes/grafana/:/etc/grafana/provisioning/datasources
+        depends_on:
+            - clickhouse
