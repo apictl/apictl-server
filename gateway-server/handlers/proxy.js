@@ -29,10 +29,12 @@ const proxyHandler = async (req, res) => {
       },
       proxyRes: (proxyRes, req, res) => {
         res.statusCode = proxyRes.statusCode;
+        
       },
     },
   });
-
+  
+  res.setHeader("proxy-status-code", 200);
   proxy(req, res);
 };
 
