@@ -1,4 +1,4 @@
-# Facade
+# API Gateway
 
 An API Gateway, which aims to keep your API Keys away from your frontend.
 
