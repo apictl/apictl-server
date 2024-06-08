@@ -32,8 +32,8 @@ jobs:
           context: .
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/api-gateway-server:${{ steps.css.outputs.ss }}
-            ${{ secrets.DOCKERHUB_USERNAME }}/api-gateway-server:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/aegis-gateway-server:${{ steps.css.outputs.ss }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/aegis-gateway-server:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
             

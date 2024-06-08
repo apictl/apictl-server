@@ -1,6 +1,6 @@
 services:
-    api-gateway-server:
-        container_name: api-gateway-server
+    aegis-gateway-server:
+        image: spirax/aegis-gateway-server:latest
         restart: unless-stopped
         ports:
             - 3000:3000/tcp
@@ -10,5 +10,4 @@ services:
             - /path/to/ssl/privkey.pem:/usr/src/app/ssl/privkey.pem
         environment:
             NODE_ENV: production
-        image: spirax/api-gateway-server:latest
         command: sh -c "npx prisma migrate deploy && npm run start"
