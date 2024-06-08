@@ -4,7 +4,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const client = createClient({
-  url: process.env.CLICKHOUSE_URL,
+  url: new URL(process.env.CLICKHOUSE_URL),
 });
 
 const pushToClickHouse = async (data) => {
