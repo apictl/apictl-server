@@ -29,7 +29,7 @@ jobs:
         name: Build and push
         uses: docker/build-push-action@v5
         with:
-          context: ./gateway-server
+          context: .
           push: true
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/api-gateway-server:${{ steps.css.outputs.ss }}
