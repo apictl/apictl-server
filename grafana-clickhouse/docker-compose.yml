@@ -12,7 +12,6 @@ services:
             - '3218:8123/tcp'
             - '1238:9000/tcp'
         environment:
-            - CLICKHOUSE_DB=proxy
             - CLICKHOUSE_USER=clickhouse
             - CLICKHOUSE_PASSWORD=<YOUR_PASSWORD>
     grafana:
@@ -25,6 +24,7 @@ services:
             - GF_SECURITY_ALLOW_EMBEDDING=true
             - GF_SERVER_CERT_KEY=/etc/certs/privkey.pem
             - GF_SERVER_CERT_FILE=/etc/certs/fullchain.pem
+            - GF_SERVER_PROTOCOL=https
         ports:
             - '5687:3000/tcp'
         volumes:
