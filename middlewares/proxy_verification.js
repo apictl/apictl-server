@@ -19,7 +19,7 @@ const proxyVerification = async (req, res, next) => {
     });
   }
 
-  if (!verify_user_agent(req.headers["User-Agent"])) {
+  if (!verifyUserAgent(req.headers["User-Agent"])) {
     return res.status(403).json({
       success: false,
       message: "Forbidden",
