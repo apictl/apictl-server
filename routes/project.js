@@ -8,3 +8,4 @@ require("dotenv").config();
 router.post("/create", checkAuth, newProjectHandler);
 
 module.exports = router;
+

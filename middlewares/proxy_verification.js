@@ -10,6 +10,15 @@ const proxyVerification = async (req, res, next) => {
       req.socket.remoteAddress ||
       req.connection.socket.remoteAddress
   );
+
+  if (req.headers.includes("Postman-Token")) {
+    return res.status(403).json({
+      success: false,
+      message: "Forbidden",
+      data: null,
+    });
+  }
+
   const projectRecord = await prisma.project.findUnique({
     where: {
       public_token: project,
@@ -48,11 +57,11 @@ const proxyVerification = async (req, res, next) => {
   }
 
   const allowedOrigins = endpointRecord.allowedOrigins || [];
-  if (
-    allowedOrigins.length > 0 &&
-    !allowedOrigins.includes(req.headers.origin)
-  ) {
-    console.log(`Forbidden Origin: ${req.headers.origin}`);
+  const origin = req.headers.origin
+    .replace("http://", "")
+    .replace("https://", "");
+  if (allowedOrigins.length > 0 && !allowedOrigins.includes(origin)) {
+    console.log(`Forbidden Origin: ${origin}`);
     return res.status(403).json({
       success: false,
       message: "Forbidden",
