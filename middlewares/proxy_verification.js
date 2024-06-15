@@ -5,14 +5,9 @@ const prisma = new PrismaClient();
 
 const proxyVerification = async (req, res, next) => {
   const { project, endpoint } = req.params;
-  const country = await getCountry(
-    req.headers["x-forwarded-for"] ||
-      req.connection.remoteAddress ||
-      req.socket.remoteAddress ||
-      req.connection.socket.remoteAddress
-  );
 
-  if ("Postman-Token" in req.headers) {
+  if (req.headers["Postman-Token"] !== undefined) {
+    confirm.log("Forbidden Client - Postman");
     return res.status(403).json({
       success: false,
       message: "Forbidden",
@@ -20,7 +15,9 @@ const proxyVerification = async (req, res, next) => {
     });
   }
 
-  if (!verifyUserAgent(req.headers['user-agent'])) {
+  const userAgent = req.headers["user-agent"];
+  if (!verifyUserAgent(userAgent)) {
+    console.log(`Forbidden User Agent - ${userAgent}`);
     return res.status(403).json({
       success: false,
       message: "Forbidden",
@@ -54,6 +51,13 @@ const proxyVerification = async (req, res, next) => {
       data: null,
     });
   }
+
+  const country = await getCountry(
+    req.headers["x-forwarded-for"] ||
+      req.connection.remoteAddress ||
+      req.socket.remoteAddress ||
+      req.connection.socket.remoteAddress
+  );
 
   const blackListedCountries = endpointRecord.blackListedCountries || [];
   if (blackListedCountries.includes(country)) {
