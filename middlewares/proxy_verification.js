@@ -64,30 +64,32 @@ const proxyVerification = async (req, res, next) => {
     console.log(`Forbidden Country: ${country}`);
     return res.status(403).json({
       success: false,
-      message: `Forbidden Country: ${country}`,
+      message: "Forbidden",
       data: null,
     });
   }
 
+  const isAllowedOrigin = true;
   const allowedOrigins = endpointRecord.allowedOrigins || [];
   const origin = req.headers.origin
     .replace("http://", "")
     .replace("https://", "");
   if (allowedOrigins.length > 0 && !allowedOrigins.includes(origin)) {
     console.log(`Forbidden Origin: ${origin}`);
-    return res.status(403).json({
-      success: false,
-      message: "Forbidden",
-      data: null,
-    });
+    isAllowedOrigin = false;
   }
 
+  const isAllowedShaKey = true;
   const allowedShaKeys = endpointRecord.allowedShaKeys || [];
   if (
     allowedShaKeys.length > 0 &&
     !allowedShaKeys.includes(req.headers["x-sha-key"])
   ) {
     console.log(`Forbidden SHA Key: ${req.headers["x-sha-key"]}`);
+    isAllowedShaKey = false;
+  }
+
+  if (!isAllowedOrigin && !isAllowedShaKey) {
     return res.status(403).json({
       success: false,
       message: "Forbidden",

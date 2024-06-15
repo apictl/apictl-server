@@ -1,4 +1,7 @@
-const { createProxyMiddleware } = require("http-proxy-middleware");
+const {
+  createProxyMiddleware,
+  fixRequestBody,
+} = require("http-proxy-middleware");
 var { decrypt } = require("../utils/encryption");
 
 require("dotenv").config();
@@ -10,7 +13,7 @@ const proxyHandler = async (req, res) => {
   if (endpointRecord.url.endsWith("/")) {
     endpointRecord.url = endpointRecord.url.slice(0, -1);
   }
-
+  console.log(endpointRecord.url);
   const proxy = createProxyMiddleware({
     target:
       endpointRecord.url +
@@ -26,6 +29,9 @@ const proxyHandler = async (req, res) => {
             );
           }
         });
+        proxyReq.path = proxyReq.path.replace(req.url, "");
+        proxyReq.method = req.method;
+        fixRequestBody(proxyReq, req);
       },
       proxyRes: (proxyRes, req, res) => {
         res.statusCode = proxyRes.statusCode;
