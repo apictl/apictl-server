@@ -8,7 +8,7 @@ require("dotenv").config();
 
 const proxyHandler = async (req, res) => {
   const { project, endpoint } = req.params;
-  const { endpointRecord, projectRecord } = req;
+  const { endpointRecord } = req;
 
   if (endpointRecord.url.endsWith("/")) {
     endpointRecord.url = endpointRecord.url.slice(0, -1);
