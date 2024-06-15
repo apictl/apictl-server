@@ -1,5 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 const getCountry = require("../utils/geolite");
+const verifyUserAgent = require("../utils/user_agent");
 const prisma = new PrismaClient();
 
 const proxyVerification = async (req, res, next) => {
@@ -11,7 +12,7 @@ const proxyVerification = async (req, res, next) => {
       req.connection.socket.remoteAddress
   );
 
-  if (req.headers.includes("Postman-Token")) {
+  if ("Postman-Token" in req.headers) {
     return res.status(403).json({
       success: false,
       message: "Forbidden",
@@ -19,7 +20,7 @@ const proxyVerification = async (req, res, next) => {
     });
   }
 
-  if (!verifyUserAgent(req.headers["User-Agent"])) {
+  if (!verifyUserAgent(req.headers['user-agent'])) {
     return res.status(403).json({
       success: false,
       message: "Forbidden",

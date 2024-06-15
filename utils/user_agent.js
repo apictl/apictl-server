@@ -7,3 +7,5 @@ const verifyUserAgent = (userAgent) => {
   }
   return true;
 };
+
+module.exports = verifyUserAgent;
