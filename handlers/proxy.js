@@ -21,15 +21,24 @@ const proxyHandler = async (req, res) => {
     changeOrigin: true,
     on: {
       proxyReq: (proxyReq, req, res) => {
+        proxyReq.path = proxyReq.path.replace(req.url, "");
         endpointRecord.injections.forEach((injection) => {
           if (injection.type.toLowerCase() == "header") {
             proxyReq.setHeader(
               injection.key,
               decrypt(injection.value, process.env.KEY_ENCRYPTION_SECRET)
             );
+          } else if (injection.type.toLowerCase() == "query") {
+            const url = new URL(proxyReq.path, endpointRecord.url);
+            url.searchParams.set(
+              injection.key,
+              decrypt(injection.value, process.env.KEY_ENCRYPTION_SECRET)
+            );
+            console.log(url);
+            proxyReq.path = url.toString();
+            console.log(proxyReq.path);
           }
         });
-        proxyReq.path = proxyReq.path.replace(req.url, "");
         proxyReq.method = req.method;
         fixRequestBody(proxyReq, req);
       },

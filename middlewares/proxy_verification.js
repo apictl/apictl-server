@@ -69,7 +69,7 @@ const proxyVerification = async (req, res, next) => {
     });
   }
 
-  const isAllowedOrigin = true;
+  var isAllowedOrigin = true;
   const allowedOrigins = endpointRecord.allowedOrigins || [];
   const origin = req.headers.origin
     .replace("http://", "")
@@ -79,7 +79,7 @@ const proxyVerification = async (req, res, next) => {
     isAllowedOrigin = false;
   }
 
-  const isAllowedShaKey = true;
+  var isAllowedShaKey = true;
   const allowedShaKeys = endpointRecord.allowedShaKeys || [];
   if (
     allowedShaKeys.length > 0 &&
