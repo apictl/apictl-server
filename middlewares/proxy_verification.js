@@ -69,27 +69,26 @@ const proxyVerification = async (req, res, next) => {
     });
   }
 
-  var isAllowedOrigin = true;
+  var isAllowedOrigin = false;
   const allowedOrigins = endpointRecord.allowedOrigins || [];
   const origin = req.headers.origin
     .replace("http://", "")
     .replace("https://", "");
-  if (allowedOrigins.length > 0 && !allowedOrigins.includes(origin)) {
-    isAllowedOrigin = false;
+  if (allowedOrigins.includes(origin)) {
+    isAllowedOrigin = true;
   }
 
-  var isAllowedShaKey = true;
+  var isAllowedShaKey = false;
   const allowedShaKeys = endpointRecord.allowedShaKeys || [];
-  if (
-    req.headers["x-sha-key"] === undefined ||
-    (allowedShaKeys.length > 0 &&
-      !allowedShaKeys.includes(req.headers["x-sha-key"]))
-  ) {
-    isAllowedShaKey = false;
+  const shaKey = req.headers["x-sha-key"];
+  if (shaKey != undefined && shaKey != "" && allowedShaKeys.includes(shaKey)) {
+    isAllowedShaKey = true;
   }
 
   if (!isAllowedOrigin && !isAllowedShaKey) {
-    console.log(`Forbidden Req - Origin: ${origin}, SHA256 Hash: ${req.headers["x-sha-key"]}`);
+    console.log(
+      `Forbidden Req - Origin: ${origin}, SHA256 Hash: ${req.headers["x-sha-key"]}`
+    );
     return res.status(403).json({
       success: false,
       message: "Forbidden",
