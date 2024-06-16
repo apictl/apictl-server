@@ -1,6 +1,11 @@
 const { PrismaClient } = require("@prisma/client");
 const dotenv = require("dotenv");
-const { validateUrl, validateLocalhost } = require("../utils/validators");
+const {
+  validateUrl,
+  validateLocalhost,
+  validateDomain,
+  validateShaKey,
+} = require("../utils/validators");
 const { encrypt } = require("../utils/encryption");
 const { generateEndpointToken } = require("../utils/token_gen");
 
@@ -48,6 +53,32 @@ const newApiEndpoint = async (req, res) => {
     return res.status(400).json({
       success: false,
       message: "API URL needs to be a valid URL, and it cannot be localhost.",
+      data: null,
+    });
+  }
+  var allOriginsValid = true;
+  allowedOrigins.forEach((origin) => {
+    if (!validateDomain(origin) && !validateLocalhost(origin, false)) {
+      allOriginsValid = false;
+    }
+  });
+  if (!allOriginsValid) {
+    return res.status(400).json({
+      success: false,
+      message: "Origin must be a valid domain",
+      data: null,
+    });
+  }
+  var allHashesValid = true;
+  allowedShaKeys.forEach((shaKey) => {
+    if (!validateShaKey(shaKey)) {
+      allHashesValid = false;
+    }
+  });
+  if (!allHashesValid) {
+    return res.status(400).json({
+      success: false,
+      message: "SHA Key must be a valid SHA256 hash",
       data: null,
     });
   }

@@ -18,10 +18,20 @@ const validateUrl = (url) => {
   );
 };
 
-const validateLocalhost = (url) => {
+const validateLocalhost = (url, schemeRequired = true) => {
   return String(url).match(
-    /^https?:\/\/(localhost|0|10|127|192(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}|\[::1?\])/gi
+    schemeRequired
+      ? /^https?:\/\/(localhost|0|10|127|192(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}|\[::1?\])$/gi
+      : /^(localhost|0|10|127|192(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}|\[::1?\])$/gi
   );
+};
+
+const validateDomain = (domain) => {
+  return String(domain).match(/^[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,}$/i);
+};
+
+const validateShaKey = (shaKey) => {
+  return String(shaKey).match(/^([a-zA-Z0-9]{2}:){31}[a-zA-Z0-9]{2}$/i);
 };
 
 module.exports = {
@@ -29,4 +39,6 @@ module.exports = {
   validatePassword,
   validateUrl,
   validateLocalhost,
+  validateDomain,
+  validateShaKey,
 };
