@@ -13,6 +13,85 @@ dotenv.config();
 
 const prisma = new PrismaClient();
 
+const validateEndpointData = (
+  title,
+  apiUrl,
+  injections,
+  allowedOrigins,
+  allowedShaKeys,
+  limit
+) => {
+  var result = undefined;
+  if (!title || !apiUrl || !injections || injections == []) {
+    result = {
+      success: false,
+      message: "Title, API URL, Injections are required",
+      data: null,
+    };
+  }
+  if (limit > 1000 || limit < 0) {
+    result = {
+      success: false,
+      message: "Limit must be between 0 and 1000",
+      data: null,
+    };
+  }
+  if (!validateUrl(apiUrl) || validateLocalhost(apiUrl)) {
+    result = {
+      success: false,
+      message: "API URL needs to be a valid URL, and it cannot be localhost.",
+      data: null,
+    };
+  }
+  var allOriginsValid = true;
+  allowedOrigins.forEach((origin) => {
+    if (
+      !validateDomain(origin) &&
+      !validateLocalhost(origin, (schemaRequired = false))
+    ) {
+      console.log(validateLocalhost(origin, false));
+      allOriginsValid = false;
+    }
+  });
+  if (!allOriginsValid) {
+    result = {
+      success: false,
+      message: "Origin must be a valid domain",
+      data: null,
+    };
+  }
+  var allHashesValid = true;
+  allowedShaKeys.forEach((shaKey) => {
+    if (!validateShaKey(shaKey)) {
+      allHashesValid = false;
+    }
+  });
+  if (!allHashesValid) {
+    result = {
+      success: false,
+      message: "SHA Key must be a valid SHA256 hash",
+      data: null,
+    };
+  }
+  var invalidInjection = false;
+  injections.forEach((injection) => {
+    if (!injection.key || !injection.value || !injection.type) {
+      invalidInjection = true;
+    }
+  });
+  if (invalidInjection) {
+    result = {
+      success: false,
+      message: "Each inject needs a key, value, and type",
+      data: null,
+    };
+  }
+  return {
+    result,
+    valid: result === undefined,
+  };
+};
+
 const getProjectInfoHandler = async (req, res) => {
   const project = req.project;
   res.json({
@@ -24,7 +103,7 @@ const getProjectInfoHandler = async (req, res) => {
   });
 };
 
-const newApiEndpointHandler = async (req, res) => {
+const newEndpointHandler = async (req, res) => {
   const project = req.project;
   const {
     title,
@@ -35,65 +114,16 @@ const newApiEndpointHandler = async (req, res) => {
     allowedShaKeys,
     limit,
   } = req.body;
-  if (!title || !apiUrl || !injections || injections == []) {
-    return res.status(400).json({
-      success: false,
-      message: "Title, API URL, Injections are required",
-      data: null,
-    });
-  }
-  if (limit > 1000 || limit < 0) {
-    return res.status(400).json({
-      success: false,
-      message: "Limit must be between 0 and 1000",
-      data: null,
-    });
-  }
-  if (!validateUrl(apiUrl) || validateLocalhost(apiUrl)) {
-    return res.status(400).json({
-      success: false,
-      message: "API URL needs to be a valid URL, and it cannot be localhost.",
-      data: null,
-    });
-  }
-  var allOriginsValid = true;
-  allowedOrigins.forEach((origin) => {
-    if (!validateDomain(origin) && !validateLocalhost(origin, false)) {
-      allOriginsValid = false;
-    }
-  });
-  if (!allOriginsValid) {
-    return res.status(400).json({
-      success: false,
-      message: "Origin must be a valid domain",
-      data: null,
-    });
-  }
-  var allHashesValid = true;
-  allowedShaKeys.forEach((shaKey) => {
-    if (!validateShaKey(shaKey)) {
-      allHashesValid = false;
-    }
-  });
-  if (!allHashesValid) {
-    return res.status(400).json({
-      success: false,
-      message: "SHA Key must be a valid SHA256 hash",
-      data: null,
-    });
-  }
-  var invalidInjection = false;
-  injections.forEach((injection) => {
-    if (!injection.key || !injection.value || !injection.type) {
-      invalidInjection = true;
-    }
-  });
-  if (invalidInjection) {
-    return res.status(400).json({
-      success: false,
-      message: "Each inject needs a key, value, and type",
-      data: null,
-    });
+  const { valid, result } = validateEndpointData(
+    title,
+    apiUrl,
+    injections,
+    allowedOrigins,
+    allowedShaKeys,
+    limit
+  );
+  if (!valid) {
+    return res.status(400).json(result);
   }
   const existingEndpoints = await prisma.endpoint.findUnique({
     where: {
@@ -161,6 +191,6 @@ const newApiEndpointHandler = async (req, res) => {
 };
 
 module.exports = {
-  getProjectInfo: getProjectInfoHandler,
-  newApiEndpoint: newApiEndpointHandler,
+  getProjectInfoHandler,
+  newEndpointHandler,
 };

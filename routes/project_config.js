@@ -3,14 +3,14 @@ var router = express.Router({ mergeParams: true });
 const { checkAuth } = require("../middlewares/auth");
 const { checkUserPerms } = require("../middlewares/user_perms");
 const {
-  getProjectInfo,
-  newApiEndpoint,
+  getProjectInfoHandler,
+  newEndpointHandler,
 } = require("../handlers/project_config");
 
 require("dotenv").config();
 
 router.use(checkAuth, checkUserPerms);
-router.get("/", getProjectInfo);
-router.patch("/endpoint/create", newApiEndpoint);
+router.get("/", getProjectInfoHandler);
+router.patch("/endpoint/create", newEndpointHandler);
 
 module.exports = router;
