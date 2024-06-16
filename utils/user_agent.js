@@ -9,7 +9,6 @@ const verifyUserAgent = (userAgent) => {
   }
   const parser = new UAParser(userAgent);
   const userAgentDetails = parser.getResult();
-  console.log(userAgentDetails);
   if (userAgentDetails.browser.name === undefined) {
     return false;
   }

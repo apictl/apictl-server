@@ -8,7 +8,6 @@ const client = createClient({
 });
 
 const pushToClickHouse = async (data) => {
-  console.log(data);
   await client.insert({
     table: "proxy_analytics",
     values: [data],

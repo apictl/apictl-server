@@ -75,21 +75,21 @@ const proxyVerification = async (req, res, next) => {
     .replace("http://", "")
     .replace("https://", "");
   if (allowedOrigins.length > 0 && !allowedOrigins.includes(origin)) {
-    console.log(`Forbidden Origin: ${origin}`);
     isAllowedOrigin = false;
   }
 
   var isAllowedShaKey = true;
   const allowedShaKeys = endpointRecord.allowedShaKeys || [];
   if (
-    allowedShaKeys.length > 0 &&
-    !allowedShaKeys.includes(req.headers["x-sha-key"])
+    req.headers["x-sha-key"] === undefined ||
+    (allowedShaKeys.length > 0 &&
+      !allowedShaKeys.includes(req.headers["x-sha-key"]))
   ) {
-    console.log(`Forbidden SHA Key: ${req.headers["x-sha-key"]}`);
     isAllowedShaKey = false;
   }
 
   if (!isAllowedOrigin && !isAllowedShaKey) {
+    console.log(`Forbidden Req - Origin: ${origin}, SHA256 Hash: ${req.headers["x-sha-key"]}`);
     return res.status(403).json({
       success: false,
       message: "Forbidden",
