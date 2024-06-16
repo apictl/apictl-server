@@ -13,7 +13,7 @@ dotenv.config();
 
 const prisma = new PrismaClient();
 
-const getProjectInfo = async (req, res) => {
+const getProjectInfoHandler = async (req, res) => {
   const project = req.project;
   res.json({
     success: true,
@@ -24,7 +24,7 @@ const getProjectInfo = async (req, res) => {
   });
 };
 
-const newApiEndpoint = async (req, res) => {
+const newApiEndpointHandler = async (req, res) => {
   const project = req.project;
   const {
     title,
@@ -161,6 +161,6 @@ const newApiEndpoint = async (req, res) => {
 };
 
 module.exports = {
-  getProjectInfo,
-  newApiEndpoint,
+  getProjectInfo: getProjectInfoHandler,
+  newApiEndpoint: newApiEndpointHandler,
 };

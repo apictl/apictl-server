@@ -1,17 +1,10 @@
 const { PrismaClient } = require("@prisma/client");
-const { validateEmail, validatePassword } = require("../utils/validators");
-const bcrypt = require("bcrypt");
-const sendEmail = require("../utils/email");
-const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 const { generateProjectToken } = require("../utils/token_gen");
 
 dotenv.config();
-const domain = process.env.DOMAIN;
-const jwtSecret = process.env.JWT_SECRET;
 
 const prisma = new PrismaClient();
-const saltRounds = 10;
 
 const newProjectHandler = async (req, res) => {
   const user = req.user;

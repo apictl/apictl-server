@@ -56,8 +56,8 @@ const registerHandler = async (req, res) => {
   });
   user.password = undefined;
   const token = jwt.sign({ name, email, id: user.id }, jwtSecret);
-  
-  const url = `${req.protocol}://${req.get('host')}/auth/verify?token=${token}`;
+
+  const url = `${req.protocol}://${req.get("host")}/auth/verify?token=${token}`;
   await sendEmail(
     email,
     "Verify",
@@ -96,7 +96,9 @@ const verifyHandler = async (req, res) => {
     res.status(500).send("There was an error in verifying your account");
   }
   res.send(
-    `Your account has been verified succesfully. Click <a href="${req.protocol}://${req.get('host')}/">here</a> to go to API Gateway`
+    `Your account has been verified succesfully. Click <a href="${
+      req.protocol
+    }://${req.get("host")}/">here</a> to go to API Gateway`
   );
 };
 
