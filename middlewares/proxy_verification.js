@@ -18,7 +18,6 @@ const proxyVerification = async (req, res, next) => {
 
   const userAgent = req.headers["user-agent"];
   if (!verifyUserAgent(userAgent)) {
-    console.log(`Forbidden User Agent - ${userAgent}`);
     res.locals.message = `Forbidden User Agent - ${userAgent}`;
     return res.status(403).json({
       success: false,
@@ -63,7 +62,6 @@ const proxyVerification = async (req, res, next) => {
 
   const blackListedCountries = endpointRecord.blackListedCountries || [];
   if (blackListedCountries.includes(country)) {
-    console.log(`Forbidden Country: ${country}`);
     res.locals.message = `Forbidden Country: ${country}`;
     return res.status(403).json({
       success: false,
@@ -95,9 +93,6 @@ const proxyVerification = async (req, res, next) => {
   }
 
   if (!isAllowedOrigin && !isAllowedShaKey) {
-    console.log(
-      `Forbidden Req - Origin: ${origin}, SHA256 Hash: ${req.headers["x-sha-key"]}`
-    );
     res.locals.message = `Forbidden Req - Origin: ${origin}, SHA256 Hash: ${req.headers["x-sha-key"]}`;
     return res.status(403).json({
       success: false,

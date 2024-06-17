@@ -49,7 +49,6 @@ const validateEndpointData = (
       !validateDomain(origin) &&
       !validateLocalhost(origin, (schemaRequired = false))
     ) {
-      console.log(validateLocalhost(origin, false));
       allOriginsValid = false;
     }
   });
@@ -166,7 +165,6 @@ const newEndpointHandler = async (req, res) => {
       },
     });
   } catch (e) {
-    console.log(e);
     return res.status(500).json({
       success: false,
       message: "An error occured while trying to add API Endpoint",
