@@ -21,6 +21,7 @@ const proxyAnalytics = (req, res, next) => {
         req.connection.socket.remoteAddress,
       status_code: res.statusCode,
       message: res.message,
+      sha256hash: req.headers["x-sha-key"],
     };
     pushToClickHouse(data);
   });
