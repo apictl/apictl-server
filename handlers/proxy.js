@@ -33,7 +33,7 @@ const proxyHandler = async (req, res) => {
               injection.key,
               decrypt(injection.value, process.env.KEY_ENCRYPTION_SECRET)
             );
-            proxyReq.path = url.toString();
+            proxyReq.path = `${url.pathname}?${url.searchParams}`;
           }
         });
         proxyReq.method = req.method;

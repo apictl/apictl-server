@@ -74,7 +74,7 @@ const proxyVerification = async (req, res, next) => {
 
   var isAllowedOrigin = false;
   const allowedOrigins = endpointRecord.allowedOrigins || [];
-  const origin = req.headers.origin
+  const origin = (req.headers.origin || "")
     .replace("http://", "")
     .replace("https://", "");
   if (allowedOrigins.includes(origin)) {
@@ -84,7 +84,13 @@ const proxyVerification = async (req, res, next) => {
   var isAllowedShaKey = false;
   const allowedShaKeys = endpointRecord.allowedShaKeys || [];
   const shaKey = req.headers["x-sha-key"];
-  if (shaKey != undefined && shaKey != "" && allowedShaKeys.includes(shaKey)) {
+  if (
+    shaKey != undefined &&
+    shaKey != "" &&
+    allowedShaKeys.findIndex(
+      (key) => shaKey.toLowerCase() === key.toLowerCase()
+    ) !== -1
+  ) {
     isAllowedShaKey = true;
   }
 
