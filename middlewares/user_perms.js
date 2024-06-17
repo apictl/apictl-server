@@ -8,7 +8,7 @@ const checkUserPerms = async (req, res, next) => {
   const { token } = req.params;
   const user = req.user;
   if (!token || token.trim() == "") {
-    res.message = "Could not get project id";
+    res.locals.message = "Could not get project id";
     return res.status(404).json({
       success: false,
       message: "Could not get project id",
@@ -25,7 +25,7 @@ const checkUserPerms = async (req, res, next) => {
     },
   });
   if (!project) {
-    res.message = "Could not find project with id";
+    res.locals.message = "Could not find project with id";
     return res.status(404).json({
       success: false,
       message: "Could not find project with id",

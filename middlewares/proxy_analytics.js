@@ -3,7 +3,7 @@ const { pushToClickHouse } = require("../utils/clickhouse");
 const proxyAnalytics = (req, res, next) => {
   const start = process.hrtime();
   const reqTime = Date.now();
-  res.on("finish", () => {
+  res.once("finish", () => {
     const end = process.hrtime();
     const ms = (end[0] - start[0]) * 1e3 + (end[1] - start[1]) * 1e-6;
     const data = {
@@ -20,7 +20,7 @@ const proxyAnalytics = (req, res, next) => {
         req.socket.remoteAddress ||
         req.connection.socket.remoteAddress,
       status_code: res.statusCode,
-      message: res.message,
+      message: res.locals.message,
       sha256hash: req.headers["x-sha-key"],
     };
     pushToClickHouse(data);

@@ -35,7 +35,11 @@ app.use("/:project/:endpoint/*", proxyRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-  next(createError(404));
+  res.status(404).json({
+    success: false,
+    message: "This route could not be found",
+    data: null,
+  });
 });
 
 // error handler
@@ -44,10 +48,10 @@ app.use(function (err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render("error", {
-    title: "Error",
+  res.status(err.status || 500).json({
+    success: false,
+    message: "An unexpected error occured",
+    data: null,
   });
 });
 
