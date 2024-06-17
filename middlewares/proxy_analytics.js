@@ -20,6 +20,7 @@ const proxyAnalytics = (req, res, next) => {
         req.socket.remoteAddress ||
         req.connection.socket.remoteAddress,
       status_code: res.statusCode,
+      message: res.message,
     };
     pushToClickHouse(data);
   });

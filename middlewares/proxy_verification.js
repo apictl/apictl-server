@@ -8,6 +8,7 @@ const proxyVerification = async (req, res, next) => {
 
   if (req.headers["Postman-Token"] !== undefined) {
     confirm.log("Forbidden Client - Postman");
+    res.message = "Forbidden Client - Postman";
     return res.status(403).json({
       success: false,
       message: "Forbidden",
@@ -18,6 +19,7 @@ const proxyVerification = async (req, res, next) => {
   const userAgent = req.headers["user-agent"];
   if (!verifyUserAgent(userAgent)) {
     console.log(`Forbidden User Agent - ${userAgent}`);
+    res.message = `Forbidden User Agent - ${userAgent}`;
     return res.status(403).json({
       success: false,
       message: "Forbidden",
@@ -62,6 +64,7 @@ const proxyVerification = async (req, res, next) => {
   const blackListedCountries = endpointRecord.blackListedCountries || [];
   if (blackListedCountries.includes(country)) {
     console.log(`Forbidden Country: ${country}`);
+    res.message = `Forbidden Country: ${country}`;
     return res.status(403).json({
       success: false,
       message: "Forbidden",
@@ -89,6 +92,7 @@ const proxyVerification = async (req, res, next) => {
     console.log(
       `Forbidden Req - Origin: ${origin}, SHA256 Hash: ${req.headers["x-sha-key"]}`
     );
+    res.message = `Forbidden Req - Origin: ${origin}, SHA256 Hash: ${req.headers["x-sha-key"]}`;
     return res.status(403).json({
       success: false,
       message: "Forbidden",
