@@ -101,6 +101,29 @@ const proxyVerification = async (req, res, next) => {
     });
   }
 
+  var path = req.baseUrl;
+  path = path.replace(`/${project}/${endpoint}`, "");
+
+  const { blackListedPaths, whiteListedPaths } = endpointRecord;
+  var forbidden = false;
+  if (blackListedPaths.length == 0 && whiteListedPaths == 0) {
+    forbidden = false;
+  } else if (
+    !whiteListedPaths.includes(path) ||
+    blackListedPaths.includes(path)
+  ) {
+    forbidden = true;
+  }
+
+  if (forbidden) {
+    res.locals.message = `Forbidden Path - ${path}`;
+    return res.status(403).json({
+      success: false,
+      message: "Forbidden",
+      data: null,
+    });
+  }
+
   req.projectRecord = projectRecord;
   req.endpointRecord = endpointRecord;
   next();

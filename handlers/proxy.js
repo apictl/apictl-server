@@ -13,6 +13,7 @@ const proxyHandler = async (req, res) => {
   if (endpointRecord.url.endsWith("/")) {
     endpointRecord.url = endpointRecord.url.slice(0, -1);
   }
+
   const proxy = createProxyMiddleware({
     target:
       endpointRecord.url +

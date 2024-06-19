@@ -19,7 +19,9 @@ const validateEndpointData = (
   injections,
   allowedOrigins,
   allowedShaKeys,
-  limit
+  limit,
+  whiteListedPaths,
+  blackListedPaths
 ) => {
   var result = undefined;
   if (!title || !apiUrl || !injections || injections == []) {
@@ -85,6 +87,17 @@ const validateEndpointData = (
       data: null,
     };
   }
+  if (
+    whiteListedPaths.filter((path) => blackListedPaths.includes(path)) != 0 &&
+    blackListedPaths.filter((path) => whiteListedPaths.includes(path)) != 0
+  ) {
+    result = {
+      success: false,
+      message:
+        "Blacklisted paths and whitelisted paths cannot have common elements",
+      data: null,
+    };
+  }
   return {
     result,
     valid: result === undefined,
@@ -112,6 +125,8 @@ const newEndpointHandler = async (req, res) => {
     allowedOrigins,
     allowedShaKeys,
     limit,
+    whiteListedPaths,
+    blackListedPaths,
   } = req.body;
   const { valid, result } = validateEndpointData(
     title,
@@ -119,7 +134,9 @@ const newEndpointHandler = async (req, res) => {
     injections,
     allowedOrigins,
     allowedShaKeys,
-    limit
+    limit,
+    whiteListedPaths,
+    blackListedPaths
   );
   if (!valid) {
     return res.status(400).json(result);
