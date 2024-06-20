@@ -1,6 +1,7 @@
 const { PrismaClient } = require("@prisma/client");
 const getCountry = require("../utils/geolite");
 const verifyUserAgent = require("../utils/user_agent");
+const { getEndpointRecord } = require("../utils/endpoint_caching");
 const prisma = new PrismaClient();
 
 const proxyVerification = async (req, res, next) => {
@@ -32,14 +33,7 @@ const proxyVerification = async (req, res, next) => {
     },
   });
 
-  const endpointRecord = await prisma.endpoint.findUnique({
-    where: {
-      public_token: endpoint,
-    },
-    include: {
-      injections: true,
-    },
-  });
+  const endpointRecord = await getEndpointRecord(endpoint);
 
   if (
     !projectRecord ||
