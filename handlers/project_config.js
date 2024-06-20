@@ -164,6 +164,15 @@ const newEndpointHandler = async (req, res) => {
       type: injection.type,
     });
   });
+
+  if (injectionData.length > 5) {
+    return res.status(400).json({
+      success: false,
+      message: "Cannot add more than 5 injections",
+      data: null,
+    });
+  }
+
   const public_token = generateEndpointToken(req.user.email);
   try {
     await prisma.endpoint.create({
