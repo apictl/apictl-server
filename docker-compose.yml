@@ -1,6 +1,6 @@
 services:
     apictl-gateway-server:
-        image: spirax/aegis-gateway-server:latest
+        image: spirax/apictl-gateway-server:latest
         restart: unless-stopped
         ports:
             - 3000:3000/tcp
