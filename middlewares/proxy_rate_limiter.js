@@ -3,8 +3,8 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
-const client = createClient({ url: process.env.REDIS_URL });
-client.connect();
+const redis = createClient({ url: process.env.REDIS_URL });
+redis.connect();
 
 const proxyRateLimiter = async (req, res, next) => {
   const { project, endpoint } = req.params;
@@ -15,9 +15,9 @@ const proxyRateLimiter = async (req, res, next) => {
     req.socket.remoteAddress ||
     req.connection.socket.remoteAddress;
   const redisId = `rate-limit:${project}/${endpoint}/${ip}`;
-  const requests = await client.incr(redisId);
+  const requests = await redis.incr(redisId);
   if (requests === 1) {
-    await client.expire(redisId, 60);
+    await redis.expire(redisId, 60);
   }
   if (requests > limit) {
     res.locals.message = "Rate limit exceeded";
