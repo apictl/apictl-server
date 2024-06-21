@@ -3,12 +3,12 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
-const client = createClient({
+const clickHouse = createClient({
   url: new URL(process.env.CLICKHOUSE_URL),
 });
 
 const pushToClickHouse = async (data) => {
-  await client.insert({
+  await clickHouse.insert({
     table: "proxy_analytics",
     values: [data],
     format: "JSONEachRow",
