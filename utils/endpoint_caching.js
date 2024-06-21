@@ -17,7 +17,6 @@ const invalidateEndpoint = async (endpoint) => {
 const getEndpointRecord = async (endpoint) => {
   const redisId = `endpoint:${endpoint}`;
   var endpointRecord = JSON.parse(await redis.get(redisId));
-  console.log(a);
   if (
     endpointRecord == undefined ||
     endpointRecord == null ||
