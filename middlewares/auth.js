@@ -61,6 +61,13 @@ const checkAuth = async (req, res, next) => {
       data: null,
     });
   }
+  if (jwtUser.iat <= user.passwordUpdatedAt.getTime()/1000) {
+    return res.status(403).json({
+      success: false,
+      message: "Please login again after password update",
+      data: null,
+    });
+  }
   req.user = user;
   next();
 };
