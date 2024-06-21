@@ -1,5 +1,5 @@
 services:
-    aegis-gateway-server:
+    apictl-gateway-server:
         image: spirax/aegis-gateway-server:latest
         restart: unless-stopped
         ports:

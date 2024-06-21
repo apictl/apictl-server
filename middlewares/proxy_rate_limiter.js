@@ -14,7 +14,7 @@ const proxyRateLimiter = async (req, res, next) => {
     req.connection.remoteAddress ||
     req.socket.remoteAddress ||
     req.connection.socket.remoteAddress;
-  const redisId = `${project}/${endpoint}/${ip}`;
+  const redisId = `rate-limit:${project}/${endpoint}/${ip}`;
   const requests = await client.incr(redisId);
   if (requests === 1) {
     await client.expire(redisId, 60);

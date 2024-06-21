@@ -9,7 +9,7 @@ const resend = new Resend(resendApiKey);
 
 const sendEmail = async (to, subject, html) => {
   await resend.emails.send({
-    from: `Aegis Gateway <${fromEmail}>`,
+    from: `ApiCtl Gateway <${fromEmail}>`,
     to: [to],
     subject: subject,
     html: html,

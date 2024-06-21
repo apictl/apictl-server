@@ -38,4 +38,5 @@ const getEndpointRecord = async (endpoint) => {
 
 module.exports = {
   getEndpointRecord,
+  invalidateEndpoint,
 };
