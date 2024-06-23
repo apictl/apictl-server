@@ -8,6 +8,7 @@ const authRouter = require("./routes/auth");
 const projectRouter = require("./routes/project");
 const projectConfigRouter = require("./routes/project_config");
 const cors = require("cors");
+const dotenv = require("dotenv");
 
 var app = express();
 app.use(
@@ -16,6 +17,9 @@ app.use(
     credentials: true,
   })
 );
+
+dotenv.config();
+app.set("subdomain offset", process.env.ENVIRONMENT == "development" ? 1 : 2);
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
@@ -30,9 +34,8 @@ app.use("/", indexRouter);
 app.use("/auth", authRouter);
 app.use("/project", projectRouter);
 app.use("/project/:token", projectConfigRouter);
-app.use("/:project/:endpoint/*", proxyRouter);
+app.use("/:endpoint/*", proxyRouter);
 
-// catch 404 and forward to error handler
 app.use(function (req, res, next) {
   res.status(404).json({
     success: false,
@@ -41,9 +44,7 @@ app.use(function (req, res, next) {
   });
 });
 
-// error handler
 app.use(function (err, req, res, next) {
-  // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
 

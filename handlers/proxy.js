@@ -7,7 +7,7 @@ var { decrypt } = require("../utils/encryption");
 require("dotenv").config();
 
 const proxyHandler = async (req, res) => {
-  const { project, endpoint } = req.params;
+  const { endpoint } = req.params;
   const { endpointRecord } = req;
 
   if (endpointRecord.url.endsWith("/")) {
@@ -17,7 +17,7 @@ const proxyHandler = async (req, res) => {
   const proxy = createProxyMiddleware({
     target:
       endpointRecord.url +
-      req.originalUrl.replace(`/${project}/${endpoint}`, ""),
+      req.originalUrl.replace(`/${endpoint}`, ""),
     changeOrigin: true,
     on: {
       proxyReq: (proxyReq, req, res) => {
