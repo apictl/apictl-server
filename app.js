@@ -11,12 +11,6 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 
 var app = express();
-app.use(
-  cors({
-    origin: true,
-    credentials: true,
-  })
-);
 
 dotenv.config();
 app.set("subdomain offset", process.env.ENVIRONMENT == "development" ? 1 : 2);
@@ -30,11 +24,25 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
+app.use(
+  "/:endpoint/*",
+  cors({
+    origin: true,
+    credentials: true,
+  }),
+  proxyRouter
+);
+
+app.use(
+  cors({
+    origin: "https://apictl.tech",
+    credentials: true,
+  })
+);
 app.use("/", indexRouter);
 app.use("/auth", authRouter);
 app.use("/project", projectRouter);
 app.use("/project/:token", projectConfigRouter);
-app.use("/:endpoint/*", proxyRouter);
 
 app.use(function (req, res, next) {
   res.status(404).json({
