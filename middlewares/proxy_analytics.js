@@ -9,7 +9,8 @@ const proxyAnalytics = (req, res, next) => {
     const data = {
       response_time: Math.round(ms * 1000) / 1000,
       origin: req.get("origin"),
-      project: req.params.project,
+      project: req.project,
+      
       endpoint: req.params.endpoint,
       time: reqTime,
       path: "/" + req.baseUrl.split("/").slice(3).join("/"),

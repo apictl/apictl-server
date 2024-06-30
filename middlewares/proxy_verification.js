@@ -5,7 +5,8 @@ const { getEndpointRecord } = require("../utils/endpoint_caching");
 const prisma = new PrismaClient();
 
 const proxyVerification = async (req, res, next) => {
-  const { project, endpoint } = req.params;
+  const { endpoint } = req.params;
+  const project = req.project;
 
   if (req.headers["Postman-Token"] !== undefined) {
     confirm.log("Forbidden Client - Postman");

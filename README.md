@@ -1,4 +1,4 @@
-# ApiCtl Gateway Server
+# apictl server
 
 An API Gateway, which aims to keep your API Keys away from your frontend.
 
@@ -18,24 +18,24 @@ An API Gateway, which aims to keep your API Keys away from your frontend.
 1. Run the Postgres and Redis Container
 
 ```bash
-git clone https://github.com/ApiCtl/ApiCtl-Database
-cd ApiCtl-Database
+git clone https://github.com/apictl/apictl-Database
+cd apictl-Database
 docker compose up
 ```
 
 2. Run the Clickhouse and Grafana Container
 
 ```bash
-git clone https://github.com/ApiCtl/ApiCtl-Analytics
-cd ApiCtl-Analytics
+git clone https://github.com/apictl/apictl-Analytics
+cd apictl-Analytics
 docker compose up
 ```
 
-3. Run the ApiCtl Server Container
+3. Run the apictl Server Container
 
 ```bash
-git clone https://github.com/ApiCtl/ApiCtl-Server
-cd ApiCtl-Server
+git clone https://github.com/apictl/apictl-Server
+cd apictl-Server
 docker compose up
 ```
 
